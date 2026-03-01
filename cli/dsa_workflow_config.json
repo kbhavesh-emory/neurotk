@@ -1,0 +1,48 @@
+{
+  "global": {
+    "output_directory": "/nashome/bhavesh/neurotk/output",
+    "dsa_api_key": "key",
+    "dsa_server_url": "http://bdsa.pathology.emory.edu:8080/api/v1",
+    "local_file_store": "/wsi_archive/APOLLO_NP"
+  },
+  "step1": {
+    "stainID": "",
+    "max_images": 1,
+    "output_file": "step2_images_output.json"
+  },
+  "step2": {
+    "script_path": "/nashome/bhavesh/neurotk/cli/TissueSegmentation/TissueSegmentation.py",
+    "input_file": "step2_images_output.json",
+    "output_file": "step34_submission.json",
+    "check_output_exists": true,
+    "docname": "GrayWhiteSegTest",
+    "tile_size": 512,
+    "batch_size": 8,
+    "mag": 2.0
+  },
+  "step3": {
+    "script_path": "/nashome/bhavesh/neurotk/cli/PositivePixelCount/PositivePixelCountV2.py",
+    "check_output_exists": true,
+    "ppc_parameters": {
+      "docname": "Positive Pixel Count",
+      "hue_value": 0.83,
+      "hue_width": 0.15,
+      "saturation_minimum": 0.05,
+      "intensity_upper_limit": 0.95,
+      "intensity_weak_threshold": 0.65,
+      "intensity_strong_threshold": 0.35,
+      "intensity_lower_limit": 0.05
+    }
+  },
+  "step4": {
+    "script_path": "/nashome/bhavesh/neurotk/cli/step4-Push.py",
+    "annotation_name": "PPC overlay (TIFF)",
+    "opacity": 0.5,
+    "tint": null,
+    "tint_alpha": 0.7,
+    "delete_existing": false,
+    "debug_rect": false,
+    "dx": 0.0,
+    "dy": 0.0
+  }
+}
